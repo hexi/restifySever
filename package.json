@@ -1,0 +1,23 @@
+{
+  "name": "restify-mongoose",
+  "version": "1.0.0",
+  "author": "hexi",
+  "dependencies": {
+    "restify": "*",
+    "mongoose": "*",
+    "debug": "*"
+  },
+  "keywords": [
+    "restify",
+    "mongoose",
+    "web",
+    "rest",
+    "restful",
+    "router",
+    "app",
+    "api"
+  ],
+  "engines": {
+    "node": "*"
+  }
+}
