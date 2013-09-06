@@ -48,9 +48,14 @@ server.del('/blog/:id', function(req, res, next){
 
 server.post('/comment/:blogId', function(req, res, next){
   Blog.addComment(req.params.blogId, req.params.comment, req.params.author, {
-    success: function(blog){
-      console.log(blog);
-      res.json(JSON.stringify(blog));
+    success: function(number){
+      var result;
+      if(number === 0){
+        result = '评论新增失败：此博客不存在！';
+      }else{
+        result = '评论新成功！';
+      }
+      res.end(result);
     }
   })
 });

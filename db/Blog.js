@@ -91,17 +91,7 @@ exports.addComment = function(blogId, comment, author, options){
     {'content': author, 'message': 'author is empty'}
   ]);
   var comment = {'comment': comment, 'author': author};
-  Blog.findById(blogId, function(error, blog){
-    if(error){
-      console.log(error);
-      if(options.error){
-        options.error(error);
-      }
-    }else{
-      blog.comments.push(comment);
-      blog.save(function(error, blog){
-        handleQueryResult(error, blog, options)
-      });
-    }
-  })
+  Blog.update({_id: blogId}, { $push: { comments: comment } }, function(error, number){
+    handleQueryResult(error, number, options);
+  });
 }
