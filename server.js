@@ -45,6 +45,15 @@ server.del('/blog/:id', function(req, res, next){
     }
   });
 });
+
+server.post('/comment/:blogId', function(req, res, next){
+  Blog.addComment(req.params.blogId, req.params.comment, req.params.author, {
+    success: function(blog){
+      console.log(blog);
+      res.json(JSON.stringify(blog));
+    }
+  })
+});
 server.listen(8083, function(){
   console.log('%s listening at %s', server.name, server.url);
 })

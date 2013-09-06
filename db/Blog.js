@@ -12,6 +12,7 @@ var blogSchema = mongoose.Schema({
   title: String,
   content: String,
   author: String,
+  comments: [{comment: String, author:String, date: Date}],
   createTime: {type: Date, default: Date.now}
 });
 var Blog = mongoose.model('Blog', blogSchema);
@@ -81,4 +82,26 @@ function handleQueryResult(error, result, options){
   }else{
     options.success(result);
   }
+}
+
+exports.addComment = function(blogId, comment, author, options){
+  isNotBlank([
+    {'content': blogId, 'message': 'blogId is empty'},
+    {'content': comment, 'message': 'comment is empty'},
+    {'content': author, 'message': 'author is empty'}
+  ]);
+  var comment = {'comment': comment, 'author': author};
+  Blog.findById(blogId, function(error, blog){
+    if(error){
+      console.log(error);
+      if(options.error){
+        options.error(error);
+      }
+    }else{
+      blog.comments.push(comment);
+      blog.save(function(error, blog){
+        handleQueryResult(error, blog, options)
+      });
+    }
+  })
 }
