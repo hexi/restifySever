@@ -1,5 +1,6 @@
 var restify = require('restify');
 var Blog = require('./db/Blog');
+var Comment = require('./db/Comment');
 var server = restify.createServer({
   name:'YtxServer'
 });
@@ -25,6 +26,18 @@ server.get('/blogs', function(req, res, next){
     }
   })
 });
+
+server.get('/blog/:id', function(req, res, next){
+  Blog.findById(req.params.id, {
+    error: function(error){
+      res.end(500,error);
+    },
+    success:function(blog){
+      res.json(JSON.stringify(blog));
+    }
+  })
+});
+
 server.put('/blog/:id', function(req, res, next){
   Blog.update(req.params.id, req.params.title, req.params.content, {
     error: function(error){
@@ -47,15 +60,9 @@ server.del('/blog/:id', function(req, res, next){
 });
 
 server.post('/comment/:blogId', function(req, res, next){
-  Blog.addComment(req.params.blogId, req.params.comment, req.params.author, {
-    success: function(number){
-      var result;
-      if(number === 0){
-        result = '评论新增失败：此博客不存在！';
-      }else{
-        result = '评论新成功！';
-      }
-      res.end(result);
+  Comment.create(req.params.blogId, req.params.comment, req.params.author, {
+    success: function(comment){
+      res.json(JSON.stringify(comment));
     }
   })
 });
