@@ -1,14 +1,6 @@
 var verify = require('../util/verify');
 var DBUtil = require('../util/DBUtil');
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
-var db = mongoose.connection;
-db.on('error',function(){
-  console.log('connection error');
-});
-db.on('open', function(){
-  console.log('connection open');
-})
+var mongoose = require('./connection')
 
 var blogSchema = mongoose.Schema({
   title: String,
