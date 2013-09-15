@@ -2,11 +2,13 @@ var verify = require('../util/verify');
 var DBUtil = require('../util/DBUtil');
 var mongoose = require('./connection')
 
-var blogSchema = mongoose.Schema({
+var Schema = mongoose.Schema;
+
+var blogSchema = Schema({
   title: String,
   content: String,
   author: String,
-  comments: [{comment: String, author:String, date: Date}],
+  comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
   createTime: {type: Date, default: Date.now}
 });
 var Blog = mongoose.model('Blog', blogSchema);

@@ -2,8 +2,10 @@ var verify = require('../util/verify');
 var DBUtil = require('../util/DBUtil');
 var mongoose = require('./connection')
 
-var commentSchema = mongoose.Schema({
-  blogId: String,
+var Schema = mongoose.Schema;
+
+var commentSchema = Schema({
+  blog: {type: Schema.Types.ObjectId, ref: 'Blog'},
   comment: String,
   author: String,
   createTime: {type: Date, default: Date.now}
@@ -17,11 +19,18 @@ exports.create = function(blogId, comment, author, options){
     {'content': author, 'message': 'author is empty'}
   ]);
   var comment = new Comment({
-    'blogId': blogId,
+    'blog': blogId,
     'comment': comment,
     'author': author
   });
   comment.save(function(error, comment){
     DBUtil.handleQueryResult(error, comment, options);
   })
+};
+
+exports.findAll = function(options){
+  Comment.find().populate('blog').exec(function(error, comments){
+    DBUtil.handleQueryResult(error, comments, options);
+    console.log('comments-->',comments);
+  });
 }

@@ -66,6 +66,14 @@ server.post('/comment/:blogId', function(req, res, next){
     }
   })
 });
+
+server.get('/comments', function(req, res, next){
+  Comment.findAll({
+    success: function(comments){
+      res.json(JSON.stringify(comments));
+    }
+  });
+});
 server.listen(8083, function(){
   console.log('%s listening at %s', server.name, server.url);
 })
