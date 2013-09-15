@@ -13,6 +13,14 @@ var blogSchema = Schema({
 });
 var Blog = mongoose.model('Blog', blogSchema);
 
+// Blog.remove({}, function(error){
+//   if(error){
+//     console.log(error);
+//   }else{
+//     console.log('blogs removed success');
+//   }
+// });
+
 exports.create = function(title, content, author, options){
   verify.isNotBlank([
     {'content':title, 'message':'title is empty!'},
@@ -32,7 +40,7 @@ exports.create = function(title, content, author, options){
 };
 
 exports.findAll = function(options){
-  Blog.find(function(error, blogs){
+  Blog.find().populate('comments').exec(function(error, blogs){
     DBUtil.handleQueryResult(error, blogs, options);
   });
 };
@@ -61,7 +69,9 @@ exports.delete = function(id, options){
 
 exports.findById = function(id, options){
   verify.isNotBlank([{'content': id, 'message': 'id is empty!'}]);
-  Blog.findById(id, function(error, blog){
+  Blog.findById(id).populate('comments').exec(function(error, blog){
     DBUtil.handleQueryResult(error, blog, options);
   });
-}
+};
+
+exports.model = Blog;
