@@ -12,14 +12,6 @@ var commentSchema = Schema({
 });
 var Comment = mongoose.model('Comment', commentSchema);
 
-// Comment.remove({}, function(error){
-//   if(error){
-//     console.log(error);
-//   }else{
-//     console.log('comments reomved success');
-//   }
-// });
-
 exports.create = function(blogId, comment, author, options){
   verify.isNotBlank([
     {'content': blogId, 'message': 'blogId is empty'},
@@ -43,5 +35,11 @@ exports.findAll = function(options){
   Comment.find().exec(function(error, comments){
     DBUtil.handleQueryResult(error, comments, options);
     console.log('comments-->',comments);
+  });
+}
+
+exports.deleteAll = function(options){
+  Comment.remove({}, function(error){
+    DBUtil.handleQueryResult(error, null, options);
   });
 }

@@ -74,6 +74,17 @@ server.get('/comments', function(req, res, next){
     }
   });
 });
+
+server.del('/comments', function(req, res, next){
+  Comment.deleteAll({
+    error: function(error){
+      res.end('delete comments faild：' + error);
+    },
+    success: function(){
+      res.end('delete comments success！');
+    }
+  });
+});
 server.listen(8083, function(){
   console.log('%s listening at %s', server.name, server.url);
 })

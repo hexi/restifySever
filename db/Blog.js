@@ -13,14 +13,6 @@ var blogSchema = Schema({
 });
 var Blog = mongoose.model('Blog', blogSchema);
 
-// Blog.remove({}, function(error){
-//   if(error){
-//     console.log(error);
-//   }else{
-//     console.log('blogs removed success');
-//   }
-// });
-
 exports.create = function(title, content, author, options){
   verify.isNotBlank([
     {'content':title, 'message':'title is empty!'},
