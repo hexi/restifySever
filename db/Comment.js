@@ -23,10 +23,16 @@ exports.create = function(blogId, comment, author, options){
     'author': author
   });
   comment.save(function(error, comment){
-    Blog.model.findById(blogId, function(error, blog){
-      blog.comments.push(comment);
-      blog.save();
-      DBUtil.handleQueryResult(error, comment, options);
+    Blog.model.update({_id: blogId}, { $push: { comments: comment } }, function(error, number){
+        if(number == 0){
+          comment.remove(function(error){
+            if(!error){
+              options.error({msg: 'create comment fail: the speciall blog not exists'})
+            }
+          });
+        }else{
+          DBUtil.handleQueryResult(error, comment, options);
+        }
     });
   })
 };
