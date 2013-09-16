@@ -19,8 +19,7 @@ commentSchema.pre('save', function(next){
       if(blog){
         next();
       }else{
-        var error = new Error();
-        error.msg = 'create comment fail: the speciall blog not exists';
+        var error = new Error('create comment fail: the speciall blog not exists');
         next(error);
       }
     }
@@ -46,9 +45,10 @@ exports.create = function(blogId, comment, author, options){
     }else{
       Blog.model.update({_id: blogId}, { $push: { comments: comment } }, function(error, number){
           if(error){
+            _error = error;
             comment.remove(function(error){
               if(!error){
-                options.error({msg: 'create comment fail: '+ JSON.stringify(error)});
+                options.error(new Error('create comment fail:' + _error.message));
               }
             });
           }else{

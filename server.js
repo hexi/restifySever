@@ -72,7 +72,7 @@ server.del('/blogs', function(req, res, next){
 server.post('/comment/:blogId', function(req, res, next){
   Comment.create(req.params.blogId, req.params.comment, req.params.author, {
     error: function(error){
-      res.end(error.msg);
+      res.end(error.message);
     },
     success: function(comment){
       res.json(JSON.stringify(comment));
