@@ -58,6 +58,16 @@ server.del('/blog/:id', function(req, res, next){
     }
   });
 });
+server.del('/blogs', function(req, res, next){
+  Blog.deleteAll({
+    error: function(error){
+      res.end('delete blogs faild：' + error);
+    },
+    success: function(){
+      res.end('delete blogs success！');
+    }
+  });
+});
 
 server.post('/comment/:blogId', function(req, res, next){
   Comment.create(req.params.blogId, req.params.comment, req.params.author, {

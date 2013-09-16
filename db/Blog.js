@@ -66,4 +66,10 @@ exports.findById = function(id, options){
   });
 };
 
+exports.deleteAll = function(options){
+  Blog.remove({}, function(error){
+    DBUtil.handleQueryResult(error, null, options);
+  });
+}
+
 exports.model = Blog;
