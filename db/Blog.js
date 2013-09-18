@@ -11,6 +11,17 @@ var blogSchema = Schema({
   comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
   createTime: {type: Date, default: Date.now}
 });
+
+blogSchema.pre('remove', function(next){
+  console.log('before remove blog');
+  console.log(this.id);
+  console.log(this.comments);
+  next();
+});
+blogSchema.post('remove', function (doc) {
+  console.log('remove blog');
+  console.log('%s has been removed', doc._id);
+});
 var Blog = mongoose.model('Blog', blogSchema);
 
 exports.create = function(title, content, author, options){
